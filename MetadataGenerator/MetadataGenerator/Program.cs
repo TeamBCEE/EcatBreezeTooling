@@ -70,8 +70,10 @@ namespace MetadataGenerator
             else
             {
                 // Hadle multitype scenario.
-                //foreach (var type in dbContextTypes) {
-                //}
+                foreach (var type in dbContextTypes) {
+                    if (type.FullName.Contains("BaseCtx")) continue;
+                    ProcessType(type, Options.OutputFile ?? $"{type.FullName}.json");
+                }
             }
         }
 
@@ -101,7 +103,7 @@ namespace MetadataGenerator
         {
             var processStartInfo = new ProcessStartInfo(@"node")
                 {
-                    Arguments = String.Format("convertJson.js {0} {1}", csdlFileName, nativeFileName),
+                    Arguments = $"convertJson.js {csdlFileName} {nativeFileName}",
                     WorkingDirectory = @".\NodeFiles"
                 };
 
